@@ -37,65 +37,155 @@ const ResumeUploader = ({ onUploadSuccess }) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow-sm h-full">
-      <h3 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
-        <FileText size={18} /> Resume Analysis
-      </h3>
+    <div className="min-h-screen bg-[#020617] text-white p-8">
 
-      {!result ? (
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition">
-          <UploadCloud className="mx-auto text-gray-400 mb-2" />
-          <p className="text-sm text-gray-500 mb-3 truncate">
-            {file ? file.name : "Drag & drop or click to upload"}
-          </p>
-          <input 
-            type="file" 
-            onChange={handleFileChange} 
-            className="hidden" 
-            id="resume-upload"
-            accept=".pdf,.doc,.docx"
-          />
-          <label 
-            htmlFor="resume-upload" 
-            className="cursor-pointer bg-indigo-50 text-indigo-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-100 inline-block"
-          >
-            Select File
-          </label>
-          
-          {file && (
-            <button 
-              type="button"
-              onClick={handleUpload}
-              disabled={uploading}
-              className="block w-full mt-4 bg-indigo-600 text-black py-2.5 rounded-md text-sm font-bold hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed transition-colors shadow-sm"
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+          ATS Resume Analyzer
+        </h1>
+
+        <p className="text-slate-400 mt-2 text-sm">
+          Upload your resume and get AI-powered ATS analysis instantly.
+        </p>
+      </div>
+
+      {/* Main Card */}
+      <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 shadow-2xl">
+
+        {!result ? (
+          <div className="border-2 border-dashed border-slate-600 rounded-2xl p-14 text-center hover:border-purple-400 transition-all duration-300">
+
+            <UploadCloud
+              size={60}
+              className="mx-auto text-purple-400 mb-5"
+            />
+
+            <h2 className="text-2xl font-semibold mb-2">
+              Upload Resume
+            </h2>
+
+            <p className="text-slate-400 mb-6">
+              {file
+                ? file.name
+                : "Drag & drop your resume or select a file"}
+            </p>
+
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="hidden"
+              id="resume-upload"
+              accept=".pdf,.doc,.docx"
+            />
+
+            <label
+              htmlFor="resume-upload"
+              className="cursor-pointer inline-block bg-gradient-to-r from-purple-600 to-pink-500 hover:bg-pink-400 text-black font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg"
             >
-              {uploading ? 'Analyzing...' : 'Analyze Resume'}
+              Select Resume
+            </label>
+
+            {file && (
+              <button
+                type="button"
+                onClick={handleUpload}
+                disabled={uploading}
+                className="block w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-500 hover:scale-[1.01] text-white py-3 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50"
+              >
+                {uploading ? "Analyzing Resume..." : "Analyze Resume"}
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-8">
+
+            {/* Success */}
+            <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-5 py-4 rounded-2xl">
+              <CheckCircle size={22} />
+              <span className="font-semibold text-lg">
+                Analysis Complete
+              </span>
+            </div>
+
+            {/* ATS Score */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-xl font-semibold">
+                  ATS Score
+                </h2>
+
+                <span className="text-purple-400 font-bold text-2xl">
+                  {result.analysis.score}/100
+                </span>
+              </div>
+
+              <div className="w-full bg-slate-700 h-4 rounded-full overflow-hidden">
+                <div
+                  className="bg-gradient-to-r from-purple-600 to-pink-500 h-full rounded-full transition-all duration-700"
+                  style={{ width: `${result.analysis.score}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Grid */}
+            <div className="grid md:grid-cols-2 gap-6">
+
+              {/* Strengths */}
+              <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6">
+                <h2 className="text-xl font-semibold text-emerald-400 mb-4">
+                  Strengths
+                </h2>
+
+                <ul className="space-y-3">
+                  {result.analysis.strengths.map((item, index) => (
+                    <li
+                      key={index}
+                      className="bg-black/20 px-4 py-3 rounded-xl text-slate-200"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Weaknesses */}
+              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6">
+                <h2 className="text-xl font-semibold text-red-400 mb-4">
+                  Weaknesses
+                </h2>
+
+                <ul className="space-y-3">
+                  {result.analysis.weaknesses?.map((item, index) => (
+                    <li
+                      key={index}
+                      className="bg-black/20 px-4 py-3 rounded-xl text-slate-200"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+            </div>
+
+            {/* Reupload */}
+            <button
+              type="button"
+              onClick={() => {
+                setResult(null);
+                setFile(null);
+              }}
+              className="w-full bg-white/10 hover:bg-white/20 border border-white/10 py-3 rounded-xl font-medium transition-all duration-300"
+            >
+              Upload Another Resume
             </button>
-          )}
-        </div>
-      ) : (
-        <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-          <div className="flex items-center gap-2 text-green-700 font-bold mb-2">
-            <CheckCircle size={18} /> Analysis Complete
           </div>
-          <div className="text-sm text-gray-700 space-y-1">
-            <p><strong className="text-gray-900">Score:</strong> {result.analysis.score}/100</p>
-            <p><strong className="text-gray-900">Strengths:</strong> {result.analysis.strengths.join(', ')}</p>
-          </div>
-          <button 
-            type="button"
-            onClick={() => {
-              setResult(null);
-              setFile(null);
-            }} 
-            className="mt-4 text-sm text-indigo-600 font-semibold hover:text-indigo-800 underline"
-          >
-            Upload New Resume
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
+
 };
 
 export default ResumeUploader;

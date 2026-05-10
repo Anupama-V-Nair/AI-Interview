@@ -37,133 +37,205 @@ const InterviewSetup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Configure Your AI Interview
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Set your preferences and get started with your practice session
-          </p>
+  <div className="min-h-screen bg-[#020617] text-white px-6 py-10">
+
+    <div className="max-w-5xl mx-auto">
+
+      {/* Header */}
+      <div className="mb-10">
+
+        <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 px-4 py-2 rounded-full text-sm font-medium mb-5">
+          AI Interview Setup
         </div>
 
-        {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            
-            {/* Job Role */}
-            <div>
-              <label htmlFor="jobRole" className="block text-sm font-medium text-gray-700 mb-2">
-                Job Role / Title *
-              </label>
-              <input
-                type="text"
-                id="jobRole"
-                name="jobRole"
-                placeholder="e.g. Frontend Developer, Data Scientist"
-                value={formData.jobRole}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
-              />
+        <h1 className="text-5xl font-bold leading-tight mb-4">
+          Configure Your Interview
+        </h1>
+
+        <p className="text-slate-400 text-lg max-w-2xl">
+          Customize your AI-powered interview experience and generate
+          personalized questions based on your role and resume.
+        </p>
+      </div>
+
+      {/* Main Form */}
+      <div className="bg-white/5 border border-white/10 rounded-[2rem] p-8 backdrop-blur-xl shadow-2xl">
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+
+          {/* Job Role */}
+          <div>
+            <label
+              htmlFor="jobRole"
+              className="block text-sm font-medium text-slate-300 mb-3"
+            >
+              Job Role / Title
+            </label>
+
+            <input
+              type="text"
+              id="jobRole"
+              name="jobRole"
+              placeholder="Frontend Developer, Data Analyst, Backend Engineer..."
+              value={formData.jobRole}
+              onChange={handleChange}
+              required
+              className="w-full bg-[#0f172a] border border-white/10 focus:border-cyan-400 rounded-2xl px-5 py-4 text-white placeholder:text-slate-500 outline-none transition-all"
+            />
+          </div>
+
+          {/* Resume Upload */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-3">
+              Upload Resume
+            </label>
+
+            <div className="bg-[#0f172a] border border-dashed border-white/10 rounded-2xl p-6">
+              <ResumeUploader onUploadSuccess={handleResumeUpload} />
             </div>
+          </div>
 
-            {/* Resume Upload */}
+          {/* Grid */}
+          <div className="grid md:grid-cols-2 gap-6">
+
+            {/* Difficulty */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Upload Resume (Optional)
-              </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
-                <ResumeUploader onUploadSuccess={handleResumeUpload} />
-              </div>
-            </div>
-
-            {/* Difficulty & Duration Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="difficulty" className="block text-sm font-medium text-gray-700 mb-2">
-                  Difficulty Level
-                </label>
-                <select
-                  id="difficulty"
-                  name="difficulty"
-                  value={formData.difficulty}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white"
-                >
-                  <option value="Easy">Easy</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Hard">Hard</option>
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-2">
-                  Duration (Minutes)
-                </label>
-                <select
-                  id="duration"
-                  name="duration"
-                  value={formData.duration}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white"
-                >
-                  <option value={5}>5 Minutes</option>
-                  <option value={10}>10 Minutes</option>
-                  <option value={15}>15 Minutes</option>
-                  <option value={30}>30 Minutes</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Question Type */}
-            <div>
-              <label htmlFor="questionType" className="block text-sm font-medium text-gray-700 mb-2">
-                Question Focus
-              </label>
-              <select
-                id="questionType"
-                name="questionType"
-                value={formData.questionType}
-                onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white"
+              <label
+                htmlFor="difficulty"
+                className="block text-sm font-medium text-slate-300 mb-3"
               >
-                <option value="Mixed">Mixed (Technical + Behavioral)</option>
-                <option value="Technical">Technical Only</option>
-                <option value="Behavioral">Behavioral Only</option>
+                Difficulty Level
+              </label>
+
+              <select
+                id="difficulty"
+                name="difficulty"
+                value={formData.difficulty}
+                onChange={handleChange}
+                className="w-full bg-[#0f172a] border border-white/10 focus:border-cyan-400 rounded-2xl px-5 py-4 text-white outline-none transition-all"
+              >
+                <option className="bg-slate-900">Easy</option>
+                <option className="bg-slate-900">Medium</option>
+                <option className="bg-slate-900">Hard</option>
               </select>
             </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading || !formData.jobRole}
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Setting up...
-                </span>
-              ) : (
-                'Start Interview →'
-              )}
-            </button>
-          </form>
-        </div>
+            {/* Duration */}
+            <div>
+              <label
+                htmlFor="duration"
+                className="block text-sm font-medium text-slate-300 mb-3"
+              >
+                Interview Duration
+              </label>
 
-        {/* Helper Text */}
-        <p className="text-center text-sm text-gray-500 mt-6">
-          💡 Tip: Upload your resume for personalized questions based on your experience
+              <select
+                id="duration"
+                name="duration"
+                value={formData.duration}
+                onChange={handleChange}
+                className="w-full bg-[#0f172a] border border-white/10 focus:border-cyan-400 rounded-2xl px-5 py-4 text-white outline-none transition-all"
+              >
+                <option value={5} className="bg-slate-900">
+                  5 Minutes
+                </option>
+
+                <option value={10} className="bg-slate-900">
+                  10 Minutes
+                </option>
+
+                <option value={15} className="bg-slate-900">
+                  15 Minutes
+                </option>
+
+                <option value={30} className="bg-slate-900">
+                  30 Minutes
+                </option>
+              </select>
+            </div>
+          </div>
+
+          {/* Question Type */}
+          <div>
+            <label
+              htmlFor="questionType"
+              className="block text-sm font-medium text-slate-300 mb-3"
+            >
+              Question Focus
+            </label>
+
+            <select
+              id="questionType"
+              name="questionType"
+              value={formData.questionType}
+              onChange={handleChange}
+              className="w-full bg-[#0f172a] border border-white/10 focus:border-cyan-400 rounded-2xl px-5 py-4 text-white outline-none transition-all"
+            >
+              <option value="Mixed" className="bg-slate-900">
+                Mixed (Technical + Behavioral)
+              </option>
+
+              <option value="Technical" className="bg-slate-900">
+                Technical Only
+              </option>
+
+              <option value="Behavioral" className="bg-slate-900">
+                Behavioral Only
+              </option>
+            </select>
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading || !formData.jobRole}
+            className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:scale-[1.01] text-white font-semibold py-4 rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-3">
+
+                <svg
+                  className="animate-spin h-5 w-5"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 
+                    0 0 5.373 0 12h4z"
+                  />
+                </svg>
+
+                Preparing Interview...
+              </span>
+            ) : (
+              "Start AI Interview →"
+            )}
+          </button>
+        </form>
+      </div>
+
+      {/* Bottom Tip */}
+      <div className="mt-8 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl p-5">
+
+        <p className="text-cyan-300 text-sm leading-relaxed">
+          Uploading your resume helps the AI generate highly personalized
+          interview questions based on your skills, projects, and experience.
         </p>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default InterviewSetup;

@@ -5,7 +5,7 @@ import api from '../services/api';
 const InterviewResult = () => {
   const { sessionId } = useParams();
   const navigate = useNavigate();
-  
+
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [analysis, setAnalysis] = useState(null);
@@ -19,7 +19,7 @@ const InterviewResult = () => {
       const response = await api.get(`/interview/${sessionId}`);
       const sessionData = response.data.data;
       setSession(sessionData);
-      
+
       // Mock analysis data (replace with actual AI evaluation)
       setAnalysis(generateMockAnalysis(sessionData));
     } catch (err) {
@@ -32,7 +32,7 @@ const InterviewResult = () => {
   const generateMockAnalysis = (session) => {
     const totalQuestions = session.questions?.length || 0;
     const answeredQuestions = session.answers?.filter(a => a && a.recorded).length || 0;
-    
+
     // Calculate overall score from real evaluated answers
     let totalScore = 0;
     let scoredAnswers = 0;
@@ -44,7 +44,7 @@ const InterviewResult = () => {
       const score = answer?.score || 0;
       const feedback = answer?.feedback || "No answer recorded.";
       const improvements = answer?.improvements || "Answer the question to get improvement feedback.";
-      
+
       if (answer && answer.recorded) {
         totalScore += score;
         scoredAnswers++;
@@ -89,10 +89,170 @@ const InterviewResult = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Analyzing your interview...</p>
+      <div className="min-h-screen bg-[#020617] text-white overflow-hidden relative animate-pulse">
+
+        {/* Background Glow */}
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-cyan-500/10 blur-3xl rounded-full" />
+
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-500/10 blur-3xl rounded-full" />
+
+        <div className="relative z-10 p-8 max-w-7xl mx-auto">
+
+          {/* HEADER SKELETON */}
+          <div className="bg-white/5 border border-white/10 rounded-[2rem] p-8 mb-8">
+
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+
+              <div>
+
+                <div className="h-12 w-80 bg-white/10 rounded-2xl mb-4"></div>
+
+                <div className="h-4 w-96 bg-white/5 rounded-lg"></div>
+              </div>
+
+              <div className="h-14 w-48 bg-cyan-500/20 rounded-2xl"></div>
+            </div>
+          </div>
+
+          {/* SCORE OVERVIEW */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="bg-white/5 border border-white/10 rounded-3xl p-6"
+              >
+
+                <div className="flex items-center justify-between mb-6">
+
+                  <div className="w-14 h-14 rounded-2xl bg-white/10"></div>
+
+                  <div className="w-20 h-6 rounded-full bg-white/10"></div>
+                </div>
+
+                <div className="h-4 w-32 bg-white/5 rounded-lg mb-4"></div>
+
+                <div className="h-10 w-24 bg-white/10 rounded-xl"></div>
+              </div>
+            ))}
+          </div>
+
+          {/* MAIN ANALYSIS */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-10">
+
+            {/* LEFT LARGE PANEL */}
+            <div className="xl:col-span-2 bg-white/5 border border-white/10 rounded-3xl p-8">
+
+              <div className="h-8 w-56 bg-white/10 rounded-xl mb-8"></div>
+
+              <div className="space-y-6">
+
+                {[1, 2, 3, 4].map((item) => (
+                  <div
+                    key={item}
+                    className="bg-black/20 border border-white/5 rounded-2xl p-6"
+                  >
+
+                    <div className="flex items-center justify-between mb-5">
+
+                      <div className="h-6 w-40 bg-white/10 rounded-lg"></div>
+
+                      <div className="h-7 w-24 bg-white/10 rounded-full"></div>
+                    </div>
+
+                    <div className="space-y-3">
+
+                      <div className="h-4 w-full bg-white/5 rounded-lg"></div>
+
+                      <div className="h-4 w-[90%] bg-white/5 rounded-lg"></div>
+
+                      <div className="h-4 w-[70%] bg-white/5 rounded-lg"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT SIDEBAR */}
+            <div className="space-y-6">
+
+              {/* Performance Chart */}
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+
+                <div className="h-7 w-40 bg-white/10 rounded-lg mb-6"></div>
+
+                <div className="h-[250px] rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center">
+
+                  <div className="w-40 h-40 rounded-full border-[18px] border-white/10 border-t-cyan-500/30"></div>
+                </div>
+              </div>
+
+              {/* AI Feedback */}
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+
+                <div className="h-7 w-36 bg-white/10 rounded-lg mb-5"></div>
+
+                <div className="space-y-4">
+
+                  {[1, 2, 3].map((item) => (
+                    <div
+                      key={item}
+                      className="bg-black/20 border border-white/5 rounded-2xl p-4"
+                    >
+
+                      <div className="h-5 w-32 bg-white/10 rounded-lg mb-3"></div>
+
+                      <div className="space-y-2">
+
+                        <div className="h-3 w-full bg-white/5 rounded"></div>
+
+                        <div className="h-3 w-[85%] bg-white/5 rounded"></div>
+
+                        <div className="h-3 w-[60%] bg-white/5 rounded"></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* QUESTION ANALYSIS */}
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+
+            <div className="h-8 w-64 bg-white/10 rounded-xl mb-8"></div>
+
+            <div className="space-y-5">
+
+              {[1, 2, 3].map((item) => (
+                <div
+                  key={item}
+                  className="bg-black/20 border border-white/5 rounded-2xl p-6"
+                >
+
+                  <div className="h-6 w-[70%] bg-white/10 rounded-lg mb-5"></div>
+
+                  <div className="space-y-3 mb-6">
+
+                    <div className="h-4 w-full bg-white/5 rounded"></div>
+
+                    <div className="h-4 w-[90%] bg-white/5 rounded"></div>
+
+                    <div className="h-4 w-[75%] bg-white/5 rounded"></div>
+                  </div>
+
+                  <div className="flex gap-3">
+
+                    <div className="h-8 w-24 bg-green-500/10 rounded-full"></div>
+
+                    <div className="h-8 w-28 bg-cyan-500/10 rounded-full"></div>
+
+                    <div className="h-8 w-20 bg-purple-500/10 rounded-full"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -100,14 +260,27 @@ const InterviewResult = () => {
 
   if (!session || !analysis) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">No Results Found</h2>
+      <div className="min-h-screen bg-[#020617] flex items-center justify-center px-6">
+
+        <div className="bg-white/5 border border-white/10 rounded-3xl p-10 text-center max-w-md w-full">
+
+          <div className="text-6xl mb-5">
+            📭
+          </div>
+
+          <h2 className="text-3xl font-bold text-white mb-3">
+            No Results Found
+          </h2>
+
+          <p className="text-slate-400 mb-8">
+            We couldn't find any interview analysis data.
+          </p>
+
           <button
-            onClick={() => navigate('/dashboard')}
-            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
+            onClick={() => navigate("/dashboard")}
+            className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 py-4 rounded-2xl font-semibold text-white hover:scale-[1.02] transition-all duration-300"
           >
-            Go to Dashboard
+            Back to Dashboard
           </button>
         </div>
       </div>
@@ -115,144 +288,235 @@ const InterviewResult = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Interview Results</h1>
-          <p className="text-gray-600">{session.jobRole} • {new Date(session.createdAt).toLocaleDateString()}</p>
+    <div className="min-h-screen bg-[#020617] text-white px-6 py-10">
+
+      <div className="max-w-6xl mx-auto">
+
+        {/* HEADER */}
+        <div className="text-center mb-12">
+
+          <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 px-4 py-2 rounded-full text-sm font-medium mb-5">
+            AI Interview Analysis
+          </div>
+
+          <h1 className="text-5xl font-bold mb-4">
+            Interview Results
+          </h1>
+
+          <p className="text-slate-400 text-lg">
+            {session.jobRole} •{" "}
+            {new Date(session.createdAt).toLocaleDateString()}
+          </p>
         </div>
 
-        {/* Overall Score Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 mb-4">
-              <div className="text-center">
-                <div className={`text-4xl font-bold ${getScoreColor(analysis.overallScore)}`}>
-                  {analysis.overallScore}%
+        {/* OVERALL SCORE */}
+        <div className="bg-white/5 border border-white/10 rounded-[2rem] p-10 mb-8 backdrop-blur-xl">
+
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+
+            {/* Left */}
+            <div>
+
+              <h2 className="text-3xl font-bold mb-4">
+                Overall Performance
+              </h2>
+
+              <p className="text-slate-400 max-w-xl leading-relaxed mb-6">
+                Your interview responses were analyzed based on technical
+                accuracy, communication clarity, confidence, and problem-solving.
+              </p>
+
+              <div className="flex gap-4 flex-wrap">
+
+                <div className="bg-white/5 border border-white/10 rounded-2xl px-6 py-4">
+                  <div className="text-3xl font-bold text-cyan-400">
+                    {session.questions?.length || 0}
+                  </div>
+
+                  <div className="text-slate-400 text-sm mt-1">
+                    Questions
+                  </div>
                 </div>
-                <div className="text-sm text-gray-600">Overall Score</div>
-              </div>
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {analysis.overallScore >= 80 ? 'Excellent Performance! 🎉' : 
-               analysis.overallScore >= 60 ? 'Good Job! 👍' : 'Keep Practicing! 💪'}
-            </h2>
-            <p className="text-gray-600">
-              You completed {analysis.completionRate}% of the interview
-            </p>
-          </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-indigo-600 mb-1">
-                {session.questions?.length || 0}
+                <div className="bg-white/5 border border-white/10 rounded-2xl px-6 py-4">
+                  <div className="text-3xl font-bold text-emerald-400">
+                    {session.answers?.filter(a => a?.recorded).length || 0}
+                  </div>
+
+                  <div className="text-slate-400 text-sm mt-1">
+                    Answered
+                  </div>
+                </div>
+
+                <div className="bg-white/5 border border-white/10 rounded-2xl px-6 py-4">
+                  <div className="text-3xl font-bold text-purple-400">
+                    {Math.floor((session.actualDuration || 0) / 60)}m
+                  </div>
+
+                  <div className="text-slate-400 text-sm mt-1">
+                    Duration
+                  </div>
+                </div>
               </div>
-              <div className="text-sm text-gray-600">Total Questions</div>
             </div>
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-green-600 mb-1">
-                {session.answers?.filter(a => a?.recorded).length || 0}
+
+            {/* Right Score */}
+            <div className="relative flex items-center justify-center">
+
+              <div className="w-64 h-64 rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center border border-white/10">
+
+                <div className="w-52 h-52 rounded-full bg-[#020617] border border-white/10 flex flex-col items-center justify-center">
+
+                  <div className="text-6xl font-bold text-cyan-400">
+                    {analysis.overallScore}%
+                  </div>
+
+                  <div className="text-slate-400 mt-2">
+                    Overall Score
+                  </div>
+                </div>
               </div>
-              <div className="text-sm text-gray-600">Questions Answered</div>
-            </div>
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-1">
-                {Math.floor((session.actualDuration || 0) / 60)}m
-              </div>
-              <div className="text-sm text-gray-600">Duration</div>
             </div>
           </div>
         </div>
 
-        {/* Strengths & Improvements */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="text-green-500">✓</span> Strengths
+        {/* STRENGTHS + IMPROVEMENTS */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+
+          {/* Strengths */}
+          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-3xl p-8">
+
+            <h3 className="text-2xl font-bold text-emerald-400 mb-6">
+              Strengths
             </h3>
-            <ul className="space-y-3">
+
+            <div className="space-y-4">
               {analysis.strengths.map((strength, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700">
-                  <span className="text-green-500 mt-1">•</span>
-                  <span>{strength}</span>
-                </li>
+                <div
+                  key={index}
+                  className="bg-black/20 border border-white/5 rounded-2xl p-4 text-slate-200"
+                >
+                  {strength}
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="text-yellow-500">💡</span> Areas for Improvement
+          {/* Improvements */}
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-3xl p-8">
+
+            <h3 className="text-2xl font-bold text-yellow-400 mb-6">
+              Areas for Improvement
             </h3>
-            <ul className="space-y-3">
+
+            <div className="space-y-4">
               {analysis.areasForImprovement.map((area, index) => (
-                <li key={index} className="flex items-start gap-2 text-gray-700">
-                  <span className="text-yellow-500 mt-1">•</span>
-                  <span>{area}</span>
-                </li>
+                <div
+                  key={index}
+                  className="bg-black/20 border border-white/5 rounded-2xl p-4 text-slate-200"
+                >
+                  {area}
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
 
-        {/* Question-by-Question Feedback */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Question-by-Question Analysis</h3>
+        {/* QUESTION FEEDBACK */}
+        <div className="bg-white/5 border border-white/10 rounded-[2rem] p-8 mb-8">
+
+          <h2 className="text-3xl font-bold mb-8">
+            Question Analysis
+          </h2>
+
           <div className="space-y-6">
+
             {analysis.questionFeedback.map((feedback, index) => (
-              <div key={index} className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between mb-3">
+              <div
+                key={index}
+                className="bg-black/20 border border-white/5 rounded-3xl p-6"
+              >
+
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5 mb-5">
+
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="bg-indigo-100 text-indigo-700 text-sm font-bold px-3 py-1 rounded-full">
-                        Q{index + 1}
+
+                    <div className="flex items-center gap-3 mb-4">
+
+                      <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-4 py-1 rounded-full text-sm font-medium">
+                        Question {index + 1}
                       </span>
-                      <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+
+                      <span className="bg-white/5 text-slate-300 border border-white/10 px-4 py-1 rounded-full text-sm">
                         {feedback.category}
                       </span>
                     </div>
-                    <p className="text-gray-900 font-medium mb-2">{feedback.question}</p>
+
+                    <h3 className="text-xl font-semibold leading-relaxed">
+                      {feedback.question}
+                    </h3>
                   </div>
-                  <div className={`text-2xl font-bold ${getScoreColor(feedback.score)}`}>
+
+                  <div className="text-4xl font-bold text-cyan-400">
                     {feedback.score}%
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+
+                <div className="space-y-5">
+
                   <div>
-                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Your Answer</h4>
-                    <p className="text-sm text-gray-700 italic border-l-2 border-indigo-300 pl-3 py-1 bg-white rounded-r">{feedback.transcript}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Feedback</h4>
-                    <p className="text-sm text-gray-700">{feedback.feedback}</p>
-                  </div>
-                  {feedback.improvements && feedback.improvements !== "-" && (
-                    <div>
-                      <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">How to Improve</h4>
-                      <p className="text-sm text-gray-700">{feedback.improvements}</p>
+                    <h4 className="text-sm uppercase tracking-wider text-slate-500 mb-2">
+                      Your Response
+                    </h4>
+
+                    <div className="bg-[#0f172a] border border-white/5 rounded-2xl p-4 text-slate-300 italic">
+                      {feedback.transcript}
                     </div>
-                  )}
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm uppercase tracking-wider text-slate-500 mb-2">
+                      AI Feedback
+                    </h4>
+
+                    <div className="bg-[#0f172a] border border-white/5 rounded-2xl p-4 text-slate-300">
+                      {feedback.feedback}
+                    </div>
+                  </div>
+
+                  {feedback.improvements &&
+                    feedback.improvements !== "-" && (
+                      <div>
+                        <h4 className="text-sm uppercase tracking-wider text-slate-500 mb-2">
+                          Suggested Improvement
+                        </h4>
+
+                        <div className="bg-[#0f172a] border border-white/5 rounded-2xl p-4 text-slate-300">
+                          {feedback.improvements}
+                        </div>
+                      </div>
+                    )}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex justify-center gap-4">
+        {/* ACTION BUTTONS */}
+        <div className="flex flex-col sm:flex-row justify-center gap-5">
+
           <button
-            onClick={() => navigate('/interview-setup')}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+            onClick={() => navigate("/interview-setup")}
+            className="bg-gradient-to-r from-cyan-500 to-purple-600 px-8 py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300"
           >
-            🔄 Try Another Interview
+            Start Another Interview
           </button>
+
           <button
-            onClick={() => navigate('/dashboard')}
-            className="bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 px-8 py-3 rounded-lg font-semibold transition-all"
+            onClick={() => navigate("/dashboard")}
+            className="bg-white/5 border border-white/10 hover:bg-white/10 px-8 py-4 rounded-2xl font-semibold transition-all duration-300"
           >
-            📊 View Dashboard
+            Back to Dashboard
           </button>
         </div>
       </div>

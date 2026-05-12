@@ -527,21 +527,6 @@ const AIInterview = () => {
               </div>
               <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl h-40 flex flex-col shrink-0">
 
-                <div className="px-5 py-3 border-b border-white/10 flex items-center justify-between shrink-0">
-
-                  <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                    🎤 Live Transcript
-                  </h3>
-
-                  {isRecording && (
-                    <span className="flex items-center gap-2 text-emerald-400 text-xs font-medium">
-
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-
-                      Listening
-                    </span>
-                  )}
-                </div>
 
                 <div className="p-4 overflow-y-auto flex-1">
 

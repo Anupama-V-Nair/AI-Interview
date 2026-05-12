@@ -27,7 +27,7 @@ const InterviewSetup = () => {
     setLoading(true);
     try {
       const result = await setupInterviewSession(formData);
-      navigate(`/ai-interview/${result.data.sessionId}`);
+      navigate(`/interview/${result.data.sessionId}`);
     } catch (error) {
       alert('Failed to setup interview. Please try again.');
       console.error(error);

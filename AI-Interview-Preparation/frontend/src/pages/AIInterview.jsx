@@ -5,7 +5,7 @@ import api from '../services/api';
 const AIInterview = () => {
   const { sessionId } = useParams();
   const navigate = useNavigate();
-  
+
   // State
   const [session, setSession] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -18,14 +18,14 @@ const AIInterview = () => {
   const [error, setError] = useState(null);
   const [cameraPermission, setCameraPermission] = useState(false);
   const [cameraInitialized, setCameraInitialized] = useState(false);
-  
+
   // Refs
   const videoRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
   const recognitionRef = useRef(null);
   const timerRef = useRef(null);
-  
+
   // Refs to fix stale closures
   const currentQuestionIndexRef = useRef(0);
   const transcriptRef = useRef('');
@@ -97,49 +97,49 @@ const AIInterview = () => {
   // ✅ SINGLE CAMERA FUNCTION - Clean version
   const requestCameraAccess = async () => {
     if (cameraInitialized) return; // Prevent duplicate calls
-    
+
     try {
       console.log('📷 Requesting camera access...');
-      
+
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { 
+        video: {
           width: { ideal: 1280 },
           height: { ideal: 720 },
           facingMode: 'user'
         },
         audio: true
       });
-      
+
       console.log('✅ Camera access granted!');
-      
+
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
-      
+
       setStream(mediaStream);
       setCameraPermission(true);
       setCameraInitialized(true);
-      
+
       // Initialize MediaRecorder
       mediaRecorderRef.current = new MediaRecorder(mediaStream, {
         mimeType: 'video/webm;codecs=vp9'
       });
-      
+
       mediaRecorderRef.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
           chunksRef.current.push(event.data);
         }
       };
-      
+
       mediaRecorderRef.current.onstop = async () => {
         const videoBlob = new Blob(chunksRef.current, { type: 'video/webm' });
         chunksRef.current = [];
         await saveAnswer(videoBlob);
       };
-      
+
     } catch (err) {
       console.error('❌ Camera access error:', err);
-      
+
       if (err.name === 'NotAllowedError') {
         setError('🔒 Camera permission denied. Please allow camera access in browser settings and refresh.');
       } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
@@ -162,7 +162,7 @@ const AIInterview = () => {
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-    
+
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
@@ -196,13 +196,13 @@ const AIInterview = () => {
 
     chunksRef.current = [];
     setTranscript('');
-    
+
     // Start video recording
     if (mediaRecorderRef.current?.state === 'inactive') {
       mediaRecorderRef.current.start();
       console.log('🔴 Recording started');
     }
-    
+
     // Start speech recognition
     if (!recognitionRef.current) {
       initializeSpeechRecognition();
@@ -214,7 +214,7 @@ const AIInterview = () => {
         console.log('Speech already started');
       }
     }
-    
+
     setIsRecording(true);
   };
 
@@ -241,11 +241,11 @@ const AIInterview = () => {
       formData.append('questionIndex', qIndex);
       formData.append('video', videoBlob, `answer-${qIndex}.webm`);
       formData.append('transcript', currentTranscript);
-      
+
       await api.post('/interview/answer', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      
+
       setAnswers(prevAnswers => {
         const newAnswers = [...prevAnswers];
         newAnswers[qIndex] = {
@@ -257,7 +257,7 @@ const AIInterview = () => {
         return newAnswers;
       });
       console.log('✅ Answer saved for question', qIndex);
-      
+
     } catch (err) {
       console.error('Failed to save answer:', err);
       setError('Failed to save answer');
@@ -281,7 +281,7 @@ const AIInterview = () => {
   const handleSubmitInterview = async () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
-    
+
     try {
       await api.post(`/interview/${sessionId}/complete`, {
         answers: answers.map(a => a?.recorded || false),
@@ -329,7 +329,7 @@ const AIInterview = () => {
               }}
               className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 text-sm"
             >
-              🔄 Try Again
+              Try Again
             </button>
             <button
               onClick={() => navigate('/dashboard')}
@@ -348,125 +348,281 @@ const AIInterview = () => {
   const isAnswerRecorded = answers[currentQuestionIndex]?.recorded;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-[#020617] text-white overflow-hidden">
+
+      {/* Background Glow */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+
+        <div className="absolute top-[-150px] left-[-150px] w-[420px] h-[420px] bg-cyan-500/10 blur-3xl rounded-full" />
+
+        <div className="absolute bottom-[-150px] right-[-150px] w-[420px] h-[420px] bg-purple-600/10 blur-3xl rounded-full" />
+      </div>
+
+      {/* HEADER */}
+      <div className="sticky top-0 z-20 backdrop-blur-xl bg-[#020617]/90 border-b border-white/10">
+
+        <div className="max-w-7xl mx-auto px-4 py-3">
+
+          <div className="flex items-center justify-between gap-4">
+
+            {/* Left */}
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">AI Interview</h1>
-              <p className="text-sm text-gray-600">{session.jobRole} • {session.difficulty}</p>
+
+              <h1 className="text-xl md:text-2xl font-bold tracking-tight">
+                AI Interview
+              </h1>
+
+              <p className="text-slate-400 text-sm mt-1">
+                {session.jobRole} • {session.difficulty}
+              </p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className={`px-4 py-2 rounded-lg font-mono text-lg font-bold ${
-                timeRemaining < 60 ? 'bg-red-100 text-red-600' : 'bg-indigo-100 text-indigo-600'
-              }`}>
+
+            {/* Right */}
+            <div className="flex items-center gap-3">
+
+              <div
+                className={`px-4 py-2 rounded-xl font-mono text-sm font-bold border ${timeRemaining < 60
+                  ? "bg-red-500/10 border-red-500/20 text-red-400"
+                  : "bg-cyan-500/10 border-cyan-500/20 text-cyan-400"
+                  }`}
+              >
                 ⏱️ {formatTime(timeRemaining)}
               </div>
-              <div className="text-sm text-gray-600">
+
+              <div className="text-sm text-slate-300 font-medium">
                 Q{currentQuestionIndex + 1}/{session.questions.length}
               </div>
             </div>
           </div>
+
+          {/* Progress */}
           <div className="mt-4">
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 h-2 rounded-full transition-all" style={{ width: `${progress}%` }}></div>
+
+            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8 lg:h-[calc(100vh-140px)] min-h-[600px]">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
-          
-          {/* Left: Camera */}
-          <div className="flex flex-col h-full gap-4">
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex-1 flex flex-col">
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 shrink-0">
-                <h2 className="text-white font-semibold">📹 Your Camera</h2>
+      {/* MAIN */}
+      <div className="max-w-7xl mx-auto px-4 py-4 h-[calc(100vh-92px)] overflow-hidden">
+
+        <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-5 h-full">
+
+          {/* LEFT SIDE */}
+          <div className="flex flex-col gap-4 h-full overflow-hidden">
+
+            {/* CAMERA CARD */}
+            <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl flex flex-col flex-1 min-h-0">
+
+              {/* Card Header */}
+              <div className="px-5 py-3 border-b border-white/10 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 shrink-0">
+
+                <h2 className="text-sm font-semibold text-white flex items-center gap-2">
+                  📹 Your Camera
+                </h2>
               </div>
-              <div className="p-6 flex-1 flex flex-col justify-center">
-                <div className="relative aspect-video bg-gray-900 rounded-xl overflow-hidden shrink-0 w-full max-w-full">
-                  <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
+
+              {/* Camera */}
+              <div className="p-4 flex flex-col flex-1 min-h-0">
+
+                <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-white/10">
+
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className="w-full h-full object-cover"
+                  />
+
                   {isRecording && (
-                    <div className="absolute top-4 right-4 flex items-center gap-2 bg-red-600 text-white px-3 py-1 rounded-full animate-pulse">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                      <span className="text-sm font-bold">REC</span>
+                    <div className="absolute top-3 right-3 flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full animate-pulse shadow-lg">
+
+                      <div className="w-2 h-2 rounded-full bg-white"></div>
+
+                      <span className="text-xs font-bold">
+                        REC
+                      </span>
                     </div>
                   )}
+
                   {!cameraPermission && !error && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-800/80 backdrop-blur-sm">
-                      <p className="text-white text-sm font-medium">Waiting for camera access...</p>
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center">
+
+                      <p className="text-sm text-white font-medium">
+                        Waiting for camera access...
+                      </p>
                     </div>
                   )}
                 </div>
-                
-                <div className="mt-6 flex justify-center gap-4 shrink-0">
+
+                {/* Controls */}
+                <div className="mt-4 flex justify-center">
+
                   {!isRecording ? (
-                    <button onClick={handleStartRecording} disabled={!cameraPermission} className="flex items-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white px-8 py-3 rounded-full font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                      <span className="text-lg">🔴</span> Start Recording
+                    <button
+                      onClick={handleStartRecording}
+                      disabled={!cameraPermission}
+                      className="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-purple-600 hover:opacity-90 disabled:opacity-50 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg"
+                    >
+                      🔴 Start Recording
                     </button>
                   ) : (
-                    <button onClick={handleStopRecording} className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 rounded-full font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                      <span className="text-lg">⏹️</span> Stop Recording
+                    <button
+                      onClick={handleStopRecording}
+                      className="flex items-center gap-2 bg-red-500 hover:bg-red-600 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg"
+                    >
+                      ⏹️ Stop Recording
                     </button>
                   )}
                 </div>
-                
+
+                {/* Success */}
                 {isAnswerRecorded && (
-                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-center text-sm font-medium animate-fade-in">
+                  <div className="mt-4 p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-center text-sm font-medium">
+
                     ✅ Answer successfully recorded
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Transcript */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 shrink-0 h-40 flex flex-col">
-              <div className="flex items-center justify-between mb-3 shrink-0">
-                <h3 className="font-semibold text-gray-800">🎤 Live Transcript</h3>
-                {isRecording && <span className="text-green-600 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></span>Listening</span>}
-              </div>
-              <div className="bg-gray-50 rounded-lg p-4 flex-1 overflow-y-auto border border-gray-100">
-                {transcript ? <p className="text-gray-700 text-sm leading-relaxed">{transcript}</p> : <p className="text-gray-400 text-sm italic">{isRecording ? 'Speak clearly to see transcript...' : 'Transcript will appear here'}</p>}
-              </div>
-            </div>
+            {/* TRANSCRIPT */}
+
           </div>
 
-          {/* Right: Question */}
-          <div className="flex flex-col h-full gap-4">
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 flex-1 flex flex-col">
-              <div className="flex items-center gap-3 mb-6 shrink-0">
-                <span className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-sm">Question {currentQuestionIndex + 1}</span>
-                <span className="text-sm font-medium text-indigo-700 bg-indigo-50 px-4 py-1.5 rounded-full border border-indigo-100">{currentQuestion.category}</span>
+          {/* RIGHT SIDE */}
+          <div className="flex flex-col gap-4 h-full overflow-hidden">
+
+            {/* QUESTION CARD */}
+            <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-5 flex flex-col flex-1 min-h-0">
+
+              {/* Top Tags */}
+              <div className="flex items-center gap-3 mb-5 shrink-0">
+
+                <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-xs font-bold shadow-lg">
+
+                  Question {currentQuestionIndex + 1}
+                </span>
+
+                <span className="px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium">
+
+                  {currentQuestion.category}
+                </span>
               </div>
-              <div className="flex-1 overflow-y-auto pr-2">
-                <h2 className="text-2xl lg:text-3xl leading-snug font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-indigo-900 mb-6 pb-2">
+
+              {/* Question */}
+              <div className="overflow-y-auto flex-1 pr-1">
+
+                <h2 className="text-lg md:text-xl leading-relaxed font-semibold text-white">
+
                   {currentQuestion.question}
                 </h2>
               </div>
-              <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm font-medium text-gray-500 shrink-0">
-                <span>⏱️</span><span>Suggested answer time: 2-3 minutes</span>
+              <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl h-40 flex flex-col shrink-0">
+
+                <div className="px-5 py-3 border-b border-white/10 flex items-center justify-between shrink-0">
+
+                  <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                    🎤 Live Transcript
+                  </h3>
+
+                  {isRecording && (
+                    <span className="flex items-center gap-2 text-emerald-400 text-xs font-medium">
+
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+
+                      Listening
+                    </span>
+                  )}
+                </div>
+
+                <div className="p-4 overflow-y-auto flex-1">
+
+                  {transcript ? (
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      {transcript}
+                    </p>
+                  ) : (
+                    <p className="text-sm italic text-slate-500">
+                      {isRecording
+                        ? "Speak clearly to see transcript..."
+                        : "Transcript will appear here"}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="mt-5 pt-4 border-t border-white/10 text-xs text-slate-400 flex items-center gap-2 shrink-0">
+
+                ⏱️ Suggested answer time: 2–3 minutes
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 shrink-0">
-              <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">💡 Interview Tips</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
-                <li className="flex items-center gap-2"><span className="text-indigo-500">•</span> Speak clearly at moderate pace</li>
-                <li className="flex items-center gap-2"><span className="text-indigo-500">•</span> Use STAR method for behavioral</li>
-                <li className="flex items-center gap-2"><span className="text-indigo-500">•</span> Maintain eye contact with camera</li>
-                <li className="flex items-center gap-2"><span className="text-indigo-500">•</span> Take a breath before answering</li>
+            {/* TIPS */}
+            <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-xl p-5 shrink-0">
+
+              <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                💡 Interview Tips
+              </h3>
+
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-300">
+
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400">•</span>
+                  Speak clearly and confidently
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <span className="text-purple-400">•</span>
+                  Use STAR method
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400">•</span>
+                  Maintain eye contact
+                </li>
+
+                <li className="flex items-center gap-2">
+                  <span className="text-purple-400">•</span>
+                  Think before answering
+                </li>
               </ul>
             </div>
 
-            <div className="flex justify-between gap-4 shrink-0 bg-white p-4 rounded-2xl shadow-lg border border-gray-100">
-              <button onClick={handlePrevQuestion} disabled={currentQuestionIndex === 0} className="flex-1 flex items-center justify-center whitespace-nowrap px-4 py-3.5 border-2 border-gray-200 rounded-xl font-bold text-gray-600 hover:bg-gray-50 hover:border-gray-300 disabled:opacity-40 disabled:hover:bg-transparent transition-all">← Previous</button>
+            {/* FOOTER BUTTONS */}
+            <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-xl p-4 flex gap-3 shrink-0">
+
+              <button
+                onClick={handlePrevQuestion}
+                disabled={currentQuestionIndex === 0}
+                className="flex-1 py-3 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-sm transition-all duration-300 disabled:opacity-40"
+              >
+                ← Previous
+              </button>
+
               {currentQuestionIndex < session.questions.length - 1 ? (
-                <button onClick={handleNextQuestion} className="flex-1 flex items-center justify-center whitespace-nowrap px-4 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-black rounded-xl font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">Next →</button>
+                <button
+                  onClick={handleNextQuestion}
+                  className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:opacity-90 text-white font-semibold text-sm transition-all duration-300 shadow-lg"
+                >
+                  Next →
+                </button>
               ) : (
-                <button onClick={handleSubmitInterview} disabled={isSubmitting} className="flex-1 flex items-center justify-center whitespace-nowrap px-4 py-3.5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50">{isSubmitting ? 'Submitting...' : 'Submit ✓'}</button>
+                <button
+                  onClick={handleSubmitInterview}
+                  disabled={isSubmitting}
+                  className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 hover:opacity-90 text-white font-semibold text-sm transition-all duration-300 shadow-lg disabled:opacity-50"
+                >
+                  {isSubmitting ? "Submitting..." : "Submit Interview ✓"}
+                </button>
               )}
             </div>
           </div>

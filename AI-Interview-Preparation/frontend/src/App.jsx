@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Dashboard from './pages/Dashboard';
 import ResumeAnalyzer from "./pages/ResumeAnalyzer";
 import AIInterview from "./pages/AIInterview";
+import InterviewSetup from './pages/InterviewSetup';
 import Analytics from "./pages/Analytics";
 import InterviewHistory from "./pages/InterviewHistory";
 import QuestionBank from "./pages/QuestionBank";
@@ -13,8 +14,8 @@ import InterviewResult from './pages/InterviewResult';
 import AppLayout from "./layouts/AppLayout";
 
 function App() {
- 
- return (
+
+  return (
     <BrowserRouter>
       <Routes>
 
@@ -26,7 +27,8 @@ function App() {
 
           <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route path="/interview" element={<AIInterview />} />
+          <Route path="/interview" element={<InterviewSetup />} />
+          <Route path="/interview/:sessionId" element={<AIInterview />} />
 
           <Route path="/analytics" element={<Analytics />} />
 
@@ -36,7 +38,7 @@ function App() {
 
           <Route path="/ResumeAnalyzer" element={<ResumeAnalyzer />} />
 
-           <Route
+          <Route
             path="/interview-result/:id"
             element={<InterviewResult />}
           />
@@ -45,7 +47,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
-    
+
   );
 }
 

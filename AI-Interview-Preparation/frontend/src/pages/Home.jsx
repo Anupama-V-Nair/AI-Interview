@@ -59,9 +59,19 @@ const Home = () => {
 
       {/* HEADER */}
       <header className="fixed top-0 w-full z-50 flex justify-between items-center px-10 py-5 bg-[#0F0F14]/80 backdrop-blur border-b border-[#2A2A35]">
-        <h1 className="text-lg font-bold text-[#A78BCB]">
-          AI InterviewCoach
+        <div className="h-20 flex items-center justify-center gap-3 border-b border-white/10 px-4">
+
+        <img
+          src="/logo.png"
+          alt="AI Interview Prep Logo"
+          className="w-10 h-10 object-contain"
+        />
+
+        <h1 className="text-xl font-bold text-white tracking-wide">
+          AI-InterviewPrep
         </h1>
+
+      </div>
 
         <div className="flex gap-6 items-center">
           <Link to="/dashboard" className="text-gray-300 hover:text-white">
@@ -115,10 +125,6 @@ const Home = () => {
             >
               Start Interview →
             </Link>
-
-            <button className="border border-[#2A2A35] px-8 py-3 rounded-lg hover:bg-[#1A1A24]">
-              View Demo
-            </button>
           </motion.div>
         </motion.div>
 
@@ -219,6 +225,79 @@ const Home = () => {
         </Link>
 
       </section>
+      {/* Footer */}
+      <footer className="min-h snap-start bg-[#0f172a] border-t border-gray-800 text-gray-400 py-10 flex-grow items-center">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+
+          {/* Brand */}
+          <div>
+            <h2 className="text-xl font-bold text-white mb-2">
+              AI Interview Platform
+            </h2>
+            <p className="text-sm">
+              Practice smarter with AI-powered mock interviews and feedback.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-white font-semibold mb-3">Quick Links</h3>
+            <ul className="space-y-2 text-sm">
+              <li><a href="/dashboard" className="hover:text-white">Dashboard</a></li>
+              <li><a href="/interview" className="hover:text-white">Interview</a></li>
+              <li><a href="/history" className="hover:text-white">History</a></li>
+              <li><a href="/settings" className="hover:text-white">Settings</a></li>
+            </ul>
+          </div>
+
+          {/* Features */}
+          <div>
+            <h3 className="text-white font-semibold mb-3">Features</h3>
+            <ul className="space-y-2 text-sm">
+              <li>AI Question Generation</li>
+              <li>Performance Analytics</li>
+              <li>Resume-based Interviews</li>
+              <li>Instant Feedback</li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-white font-semibold mb-3">Connect</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a
+                  href="https://github.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-white"
+                >
+                  GitHub
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="https://linkedin.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-white"
+                >
+                  LinkedIn
+                </a>
+              </li>
+              <li> anjalikumari128989@gmail.com </li>
+              <li>anupamanair2224@gmail.com</li>
+              <li>singhdimple043@gmail.com </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
+          © {new Date().getFullYear()} AI Interview Platform • Built with React & Tailwind CSS
+        </div>
+      </footer>
 
     </div>
   );

@@ -244,7 +244,7 @@ const InterviewHistory = () => {
               </div>
 
               <button
-                onClick={() => navigate('/interview-setup')}
+                onClick={() => navigate('/interview')}
                 className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:scale-105 transition-all duration-300 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/30"
               >
                 + New Interview
@@ -456,7 +456,7 @@ const InterviewHistory = () => {
                           <button
                             onClick={() =>
                               navigate(
-                                `/ai-interview/${interview._id}`
+                                `/interview/${interview._id}`
                               )
                             }
                             className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-blue-500/30"
@@ -481,7 +481,7 @@ const InterviewHistory = () => {
 
                       <button
                         onClick={() =>
-                          navigate('/interview-setup')
+                          navigate(`/interview/${interview._id}`)
                         }
                         className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-indigo-500/30 hover:scale-105"
                       >

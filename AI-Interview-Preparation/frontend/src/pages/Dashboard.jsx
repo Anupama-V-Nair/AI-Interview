@@ -95,7 +95,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* QUICK ACTIONS SKELETON */}
-                <div className="grid md:grid-cols-3 gap-6 mb-12">
+                <div className="grid md:grid-cols-2 gap-6 mb-12">
 
                     {[1, 2, 3].map((item) => (
                         <div
@@ -210,7 +210,7 @@ const Dashboard = () => {
             </div>
 
             {/* QUICK ACTIONS */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="grid md:grid-cols-2 gap-6 mb-12">
 
                 {/* START INTERVIEW */}
                 <div className="bg-white/5 border border-white/10 rounded-3xl p-7 hover:border-cyan-400/30 transition-all duration-300 group">
@@ -263,29 +263,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* PRACTICE QUESTIONS */}
-                <div className="bg-white/5 border border-white/10 rounded-3xl p-7 hover:border-pink-400/30 transition-all duration-300 group">
-
-                    <div className="bg-pink-500/10 w-fit p-4 rounded-2xl mb-5">
-                        <Clock3 className="text-pink-400" size={32} />
-                    </div>
-
-                    <h2 className="text-2xl font-semibold mb-3">
-                        Practice Questions
-                    </h2>
-
-                    <p className="text-slate-400 mb-8 leading-relaxed">
-                        Solve curated technical and HR interview questions to strengthen
-                        your confidence and communication.
-                    </p>
-
-                    <button
-                        onClick={() => navigate("/question-bank")}
-                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-orange-500 py-3 rounded-xl font-semibold hover:scale-[1.02] transition-all duration-300"
-                    >
-                        Practice Now
-                        <ArrowRight size={18} />
-                    </button>
-                </div>
+                
             </div>
 
             {/* RECENT INTERVIEWS */}
@@ -406,11 +384,11 @@ const Dashboard = () => {
                                         ) : (
                                             <button
                                                 onClick={() =>
-                                                    navigate(`/ai-interview/${interview._id}`)
+                                                    navigate(`/interview/${interview._id}`)
                                                 }
                                                 className="bg-blue-500 hover:bg-blue-600 px-5 py-3 rounded-xl font-medium transition-all"
                                             >
-                                                Resume Interview
+                                                    Retake
                                             </button>
                                         )}
                                     </div>

@@ -5,14 +5,8 @@ import ResumeUploader from './ResumeUploader';
 
 const PrepHub = () => {
   return (
-    <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-      <h2 className="text-xl font-bold mb-6">Interview Preparation Hub</h2>
-      
-      {/* Card 1 */}
-    <ResumeUploader />
-
-      
-      
+    <div>
+      <ResumeUploader />
     </div>
   );
 };

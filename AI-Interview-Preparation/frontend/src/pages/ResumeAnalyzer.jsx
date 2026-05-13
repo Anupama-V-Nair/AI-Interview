@@ -6,7 +6,7 @@ import PrepHub from '../components/PrepHub';
 
 const Dashboard = () => {
   return (
-        <div className="lg:col-span-1">
+        <div>
           <PrepHub />
         </div>
   );

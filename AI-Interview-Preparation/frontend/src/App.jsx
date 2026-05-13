@@ -9,7 +9,7 @@ import AIInterview from "./pages/AIInterview";
 import InterviewSetup from './pages/InterviewSetup';
 import Analytics from "./pages/Analytics";
 import InterviewHistory from "./pages/InterviewHistory";
-import QuestionBank from "./pages/QuestionBank";
+import Settings from "./pages/settings";
 import InterviewResult from './pages/InterviewResult';
 import AppLayout from "./layouts/AppLayout";
 
@@ -34,13 +34,12 @@ function App() {
 
           <Route path="/history" element={<InterviewHistory />} />
 
-          <Route path="/question-bank" element={<QuestionBank />} />
+          <Route path="/settings" element={<Settings />} />
 
           <Route path="/ResumeAnalyzer" element={<ResumeAnalyzer />} />
 
           <Route
-            path="/interview-result/:id"
-            element={<InterviewResult />}
+            path="/interview-result/:sessionId" element={<InterviewResult />}
           />
 
         </Route>

@@ -38,11 +38,6 @@ const Sidebar = () => {
       icon: <History size={20} />,
     },
     {
-      name: "Question Bank",
-      path: "/question-bank",
-      icon: <FileQuestion size={20} />,
-    },
-    {
       name: "Settings",
       path: "/settings",
       icon: <Settings size={20} />,

@@ -8,6 +8,7 @@ const resumeRoutes = require('./routes/resumeRoutes');
 const interviewRoutes = require('./routes/interviewRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const questionRoutes = require('./routes/questionRoutes');
+const authRoutes = require('./routes/authRoutes');
 const app = express();
 
 app.use(cors(
@@ -18,6 +19,7 @@ app.use('/api', analyticsRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/interview', interviewRoutes);
 app.use('/api/question', questionRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // FAKE DATA ROUTE (This mimics the AI analyzing you)

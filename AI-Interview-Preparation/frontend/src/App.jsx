@@ -12,18 +12,29 @@ import InterviewHistory from "./pages/InterviewHistory";
 import QuestionBank from "./pages/QuestionBank";
 import InterviewResult from './pages/InterviewResult';
 import AppLayout from "./layouts/AppLayout";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
 
   return (
-    <BrowserRouter>
-      <Routes>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
 
-        {/* Public Page */}
-        <Route path="/" element={<Home />} />
+          {/* Public Page */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
-        {/* App Layout Routes */}
-        <Route element={<AppLayout />}>
+          {/* App Layout Routes - Protected */}
+          <Route element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }>
 
           <Route path="/dashboard" element={<Dashboard />} />
 
@@ -47,7 +58,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
-
+    </AuthProvider>
   );
 }
 

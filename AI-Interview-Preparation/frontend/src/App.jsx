@@ -9,7 +9,7 @@ import AIInterview from "./pages/AIInterview";
 import InterviewSetup from './pages/InterviewSetup';
 import Analytics from "./pages/Analytics";
 import InterviewHistory from "./pages/InterviewHistory";
-import Settings from "./pages/settings";
+import Support from "./pages/support";
 import InterviewResult from './pages/InterviewResult';
 import AppLayout from "./layouts/AppLayout";
 import Login from "./pages/Login";
@@ -45,7 +45,7 @@ function App() {
 
           <Route path="/history" element={<InterviewHistory />} />
 
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/support" element={<Support />} />
 
           <Route path="/ResumeAnalyzer" element={<ResumeAnalyzer />} />
 

@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   Mic,
   BarChart3,
   History,
-  FileQuestion,
-  Settings,
+  LifeBuoy,
   FileText
 } from "lucide-react";
 
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+
 const Sidebar = () => {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const navItems = [
     {
       name: "Dashboard",
@@ -38,9 +51,9 @@ const Sidebar = () => {
       icon: <History size={20} />,
     },
     {
-      name: "Settings",
-      path: "/settings",
-      icon: <Settings size={20} />,
+      name: "Support",
+      path: "/support",
+      icon: <LifeBuoy size={20} />,
     },
   ];
 
@@ -70,9 +83,10 @@ const Sidebar = () => {
             to={item.path}
             className={({ isActive }) =>
               `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group
-              ${isActive
-                ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg"
-                : "text-gray-300 hover:bg-white/10 hover:text-white"
+              ${
+                isActive
+                  ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg"
+                  : "text-gray-300 hover:bg-white/10 hover:text-white"
               }`
             }
           >
@@ -86,7 +100,11 @@ const Sidebar = () => {
       <div className="p-4 border-t border-white/10">
         <div className="bg-white/5 rounded-xl p-4">
           <p className="text-sm text-gray-400">Logged in as</p>
-          <h2 className="text-white font-semibold">Anupama</h2>
+
+          <h2 className="text-white font-semibold">
+            {user?.displayName || user?.email || "Guest"}
+          </h2>
+
         </div>
       </div>
     </aside>

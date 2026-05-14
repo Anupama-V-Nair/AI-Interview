@@ -256,7 +256,7 @@ const Analytics = () => {
           </p>
 
           <button
-            onClick={() => navigate('/interview-setup')}
+            onClick={() => navigate('/interview')}
             className="mt-8 w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-indigo-500/30"
           >
             Start First Interview
@@ -324,7 +324,7 @@ const Analytics = () => {
 
                 <button
                   onClick={() =>
-                    navigate('/interview-setup')
+                    navigate('/interview')
                   }
                   className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:scale-105 transition-all duration-300 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/30"
                 >

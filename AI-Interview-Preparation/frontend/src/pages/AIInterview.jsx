@@ -493,66 +493,8 @@ const AIInterview = () => {
               </div>
             </div>
 
-            {/* TRANSCRIPT */}
-
-          </div>
-
-          {/* RIGHT SIDE */}
-          <div className="flex flex-col gap-4 h-full overflow-hidden">
-
-            {/* QUESTION CARD */}
-            <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-5 flex flex-col flex-1 min-h-0">
-
-              {/* Top Tags */}
-              <div className="flex items-center gap-3 mb-5 shrink-0">
-
-                <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-xs font-bold shadow-lg">
-
-                  Question {currentQuestionIndex + 1}
-                </span>
-
-                <span className="px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium">
-
-                  {currentQuestion.category}
-                </span>
-              </div>
-
-              {/* Question */}
-              <div className="overflow-y-auto flex-1 pr-1">
-
-                <h2 className="text-lg md:text-xl leading-relaxed font-semibold text-white">
-
-                  {currentQuestion.question}
-                </h2>
-              </div>
-              <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl h-40 flex flex-col shrink-0">
-
-
-                <div className="p-4 overflow-y-auto flex-1">
-
-                  {transcript ? (
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                      {transcript}
-                    </p>
-                  ) : (
-                    <p className="text-sm italic text-slate-500">
-                      {isRecording
-                        ? "Speak clearly to see transcript..."
-                        : "Transcript will appear here"}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="mt-5 pt-4 border-t border-white/10 text-xs text-slate-400 flex items-center gap-2 shrink-0">
-
-                ⏱️ Suggested answer time: 2–3 minutes
-              </div>
-            </div>
-
-            {/* TIPS */}
-            <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-xl p-5 shrink-0">
+            {/* Tips */}
+             <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-xl p-5 shrink-0">
 
               <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                 💡 Interview Tips
@@ -580,6 +522,65 @@ const AIInterview = () => {
                   Think before answering
                 </li>
               </ul>
+            </div>
+
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="flex flex-col gap-4 h-full overflow-hidden">
+
+            {/* QUESTION CARD */}
+            <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-5 flex flex-col flex-1 min-h-0">
+
+              {/* Top Tags */}
+              <div className="flex items-center gap-3 mb-5 shrink-0">
+
+                <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-xs font-bold shadow-lg">
+
+                  Question {currentQuestionIndex + 1}
+                </span>
+
+                <span className="px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium">
+
+                  {currentQuestion.category}
+                </span>
+              </div>
+
+              {/* Question */}
+              <div className="overflow-y-auto flex-1 pr-1">
+
+                <p className="text-2xl md:text-xl leading-relaxed font-semibold text-white">
+
+                  {currentQuestion.question}
+                </p>
+              </div>
+            </div>
+
+           
+            {/* Footer */}
+            <div className="mt-5 pt-4 border-t border-white/10 text-xs text-slate-400 flex items-center gap-2 shrink-0">
+
+              ⏱️ Suggested answer time: 2–3 minutes
+            </div>
+
+
+            {/* Transcript */}
+           <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl h-40 flex flex-col shrink-0">
+
+              <div className="p-4 overflow-y-auto flex-1">
+
+                {transcript ? (
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    {transcript}
+                  </p>
+                ) : (
+                  <p className="text-sm italic text-slate-500">
+                    {isRecording
+                      ? "Speak clearly to see transcript..."
+                      : "Transcript will appear here"}
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* FOOTER BUTTONS */}
